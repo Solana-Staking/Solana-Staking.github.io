@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO / EEAT Meta Tags -->
+  <title>Solana Staking — SOL Delegation, Tower BFT, PoH, Epochs, Jito MEV, mSOL &amp; Troubleshooting (2026)</title>
+  <meta name="description" content="Solana staking guide (2026): how SOL delegation works, Tower BFT consensus, Proof of History clock, vote credit mechanics, epoch-based rewards, Jito MEV, mSOL via Marinade, jitoSOL, Sanctum liquid staking aggregator, APY vs APR, delinquent validators, and troubleshooting. Includes KPIs, runbook, and a deep FAQ.">
+  <meta name="author" content="Crypto Finance Experts">
+  <link rel="canonical" href="https://lido-solana-staking.example.com/">
+
+  <link rel="icon" type="image/png" href="lido.staking.logo.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://lido-solana-staking.example.com/">
+  <meta property="og:title" content="Solana Staking — SOL Delegation, Tower BFT, PoH, Jito MEV &amp; Liquid Staking (2026)">
+  <meta property="og:description" content="Practical SOL staking guide: Tower BFT, Proof of History, vote credits, Jito MEV, epoch mechanics, Marinade mSOL, jitoSOL, Sanctum aggregator, and troubleshooting.">
+  <meta property="og:image" content="cover.png">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://lido-solana-staking.example.com/">
+  <meta property="twitter:title" content="Solana Staking — Tower BFT, PoH, Jito MEV, mSOL &amp; APY/APR (2026)">
+  <meta property="twitter:description" content="How to stake SOL on Solana: Tower BFT, Proof of History, Jito MEV, Marinade mSOL, jitoSOL, and best practices in 2025–2026.">
+  <meta property="twitter:image" content="cover.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Solana Staking — SOL Delegation, Tower BFT, PoH, Epochs, Jito MEV, mSOL & Troubleshooting (2026)",
+    "description": "Comprehensive guide to Solana staking: Tower BFT consensus, Proof of History, vote credit mechanics, epoch rewards, Jito MEV, Marinade mSOL, jitoSOL, Sanctum aggregator, APY/APR, and troubleshooting.",
+    "author": { "@type": "Organization", "name": "Crypto Finance Experts" },
+    "publisher": { "@type": "Organization", "name": "Crypto Finance Experts" },
+    "datePublished": "2026-01-01",
+    "dateModified": "2026-03-01"
+  }
+  </script>
+
+  <style>
+    :root{
+      /* Solana Brand Purple + Green Theme */
+      --primary:#9945FF;
+      --primary-600:#7C2AE8;
+      --primary-700:#6419D1;
+      --accent:#14F195;
+
+      --ink:#F0FDF4;
+      --muted:#94A3B8;
+      --muted-2:#64748B;
+
+      --bg:#030209;
+      --panel:#070312;
+      --panel-2:#0C0520;
+      --line:rgba(255,255,255,.08);
+
+      --ok:#34D399;
+      --warn:#F59E0B;
+      --error:#F87171;
+
+      --shadow:0 12px 32px rgba(0,0,0,.65);
+      --radius:14px;
+      --radius-sm:10px;
+      --radius-lg:20px;
+      --gap:1.25rem;
+      --gap-lg:2rem;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      color:var(--muted);
+      background:var(--bg);
+      line-height:1.65;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    img{max-width:100%;height:auto;display:block}
+    .container{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+
+    h1,h2,h3,h4{color:var(--ink);line-height:1.25;margin:0 0 .6rem}
+    h1{font-size:clamp(2rem,4.5vw,3.1rem);font-weight:800;letter-spacing:-.2px}
+    h2{font-size:clamp(1.35rem,2.8vw,2rem);margin-top:2.2rem;padding-top:.6rem;border-top:1px solid var(--line)}
+    h3{font-size:clamp(1.05rem,2.2vw,1.3rem);color:#86EFAC}
+
+    p,li,td,th{font-size:1rem}
+    .lead{font-size:1.125rem;color:#DCFCE7}
+    .muted{color:var(--muted)}
+    .muted-2{color:var(--muted-2)}
+
+    header.hero{padding:clamp(2rem,6vw,4rem) 0;border-bottom:1px solid var(--line)}
+    .hero-grid{display:grid;gap:var(--gap-lg);grid-template-columns:1fr;align-items:stretch}
+    .hero-card{
+      background:var(--panel);border:1px solid var(--line);
+      border-radius:var(--radius-lg);padding:clamp(1rem,3vw,1.75rem);box-shadow:var(--shadow);
+    }
+
+    .brand-row{display:flex;align-items:center;gap:.9rem;margin-bottom:.75rem}
+    .brand-logo{
+      width:54px;height:54px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(153,69,255,.08);padding:.35rem;object-fit:contain;
+      box-shadow:0 6px 16px rgba(0,0,0,.40);flex:0 0 auto;
+    }
+
+    .cta{
+      display:inline-flex;align-items:center;gap:.5rem;
+      background:var(--primary);color:#fff;padding:1rem 2.5rem;border-radius:12px;
+      font-weight:800;font-size:1.05rem;letter-spacing:.2px;
+      box-shadow:0 10px 28px rgba(153,69,255,.35);border:1px solid rgba(255,255,255,.10);
+      transition:background .18s,transform .18s,box-shadow .18s;
+    }
+    .cta:hover{background:var(--primary-600);transform:translateY(-2px);box-shadow:0 16px 36px rgba(153,69,255,.50);text-decoration:none}
+
+    .note{
+      border-left:2px solid var(--accent);padding:.75rem 1rem;
+      background:rgba(20,241,149,.06);border-radius:0 10px 10px 0;color:#DCFCE7;
+    }
+
+    section.step-guide{padding:clamp(2rem,6vw,3.5rem) 0}
+    .steps{display:grid;gap:var(--gap);grid-template-columns:1fr}
+    .step{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:1.2rem;box-shadow:0 8px 20px rgba(0,0,0,.45);
+      transition:transform .2s ease,border-color .2s ease;
+    }
+    .step:hover{transform:translateY(-3px);border-color:rgba(20,241,149,.28)}
+    .step .icon{
+      width:48px;height:48px;border-radius:10px;display:inline-grid;place-items:center;
+      background:rgba(153,69,255,.14);margin-bottom:.6rem;color:#86EFAC;
+      font-weight:900;border:1px solid rgba(20,241,149,.20);
+    }
+
+    main .card{
+      background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+      padding:1.25rem;margin:1.25rem 0;box-shadow:0 8px 20px rgba(0,0,0,.45);
+    }
+
+    .grid-2{display:grid;gap:var(--gap);grid-template-columns:1fr}
+    .pillbar{display:flex;flex-wrap:wrap;gap:.6rem;margin:.75rem 0 0}
+    .pill{border:1px solid var(--line);background:rgba(153,69,255,.09);padding:.4rem .65rem;border-radius:999px;font-weight:700;color:#86EFAC}
+
+    .toc{border:1px solid var(--line);background:rgba(153,69,255,.04);border-radius:var(--radius);padding:1rem}
+    .toc strong{color:var(--ink)}
+    .toc ul{margin:.5rem 0 0;padding-left:1.1rem}
+    .toc li{margin:.25rem 0}
+    .toc a{font-weight:700;color:var(--accent)}
+
+    table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:12px}
+    th,td{padding:.9rem;border-bottom:1px solid var(--line)}
+    th{background:rgba(153,69,255,.10);color:var(--ink);text-align:left}
+    tr.highlight{background:rgba(153,69,255,.06)}
+    tr:hover{background:rgba(255,255,255,.02)}
+
+    .ok{color:var(--ok)}.warn{color:var(--warn)}.err{color:var(--error)}
+
+    .eeat{
+      background:rgba(153,69,255,.04);border:1px solid var(--line);
+      border-radius:var(--radius);padding:1.25rem;box-shadow:0 8px 20px rgba(0,0,0,.45);
+    }
+
+    .faq-item{border-bottom:1px solid var(--line);padding:.9rem 0}
+    .faq-button{all:unset;display:flex;justify-content:space-between;align-items:center;width:100%;cursor:pointer;padding:.3rem 0}
+    .faq-button:focus-visible{outline:2px solid var(--accent)}
+    .faq-button h3{margin:0;font-weight:800}
+    .faq-content{max-height:0;overflow:hidden;transition:max-height .25s ease}
+    .faq-content.open{padding-top:.6rem}
+    .faq-plus{font-weight:900;color:var(--accent);font-size:1.2rem}
+
+    .cta-center{display:flex;justify-content:center;margin-top:1.25rem}
+
+    .badge-row{display:flex;flex-wrap:wrap;gap:.6rem;margin:.9rem 0 0}
+    .badge{border:1px solid rgba(20,241,149,.20);background:rgba(20,241,149,.06);padding:.35rem .6rem;border-radius:999px;font-weight:800;color:#86EFAC}
+
+    .callout-grid{display:grid;gap:var(--gap);grid-template-columns:1fr;margin-top:.75rem}
+    .mini{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:var(--radius);padding:1rem}
+    .mini h3{margin-bottom:.35rem}
+    .kpi-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:.5rem}
+    .kpi-badges span{
+      border:1px solid rgba(153,69,255,.26);background:rgba(153,69,255,.10);
+      color:#86EFAC;padding:.3rem .55rem;border-radius:999px;font-weight:800;font-size:.9rem;
+    }
+
+    .src{
+      display:inline-flex;align-items:center;gap:.2rem;font-size:.78rem;font-weight:700;
+      color:var(--accent);border:1px solid rgba(20,241,149,.24);background:rgba(153,69,255,.09);
+      border-radius:5px;padding:.1rem .4rem;vertical-align:middle;white-space:nowrap;
+    }
+    .src:hover{background:rgba(20,241,149,.16);text-decoration:none}
+    .src::before{content:'↗ ';font-size:.7rem;opacity:.7}
+
+    /* PoH timeline visual */
+    .poh-strip{
+      display:flex;align-items:center;gap:.3rem;
+      overflow-x:auto;padding:.5rem 0;margin:.75rem 0;
+      scrollbar-width:thin;
+    }
+    .poh-hash{
+      background:rgba(153,69,255,.14);border:1px solid rgba(153,69,255,.25);
+      border-radius:6px;padding:.4rem .6rem;font-size:.72rem;font-weight:800;
+      color:#C4B5FD;white-space:nowrap;min-width:55px;text-align:center;flex-shrink:0;
+    }
+    .poh-hash.tx{background:rgba(20,241,149,.14);border-color:rgba(20,241,149,.28);color:#86EFAC}
+    .poh-hash.slot{background:rgba(249,168,212,.10);border-color:rgba(249,168,212,.22);color:#FDA4AF}
+    .poh-arrow{color:var(--primary);font-size:.75rem;opacity:.7;flex-shrink:0}
+
+    /* Vote credit progress */
+    .vc-bars{display:grid;gap:.5rem;margin:.75rem 0}
+    .vc-row{display:flex;align-items:center;gap:.75rem}
+    .vc-lbl{min-width:130px;font-size:.85rem;font-weight:700;color:#86EFAC}
+    .vc-track{flex:1;height:5px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden}
+    .vc-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--accent))}
+    .vc-val{min-width:80px;text-align:right;font-size:.85rem;font-weight:800;color:var(--accent)}
+
+    /* Liquid staking comparison cards */
+    .lst-grid{display:grid;gap:.75rem;grid-template-columns:1fr;margin-top:.75rem}
+    .lst-card{border:1px solid var(--line);background:rgba(153,69,255,.05);border-radius:var(--radius);padding:1rem}
+    .lst-card h3{font-size:.95rem;margin-bottom:.4rem;color:var(--ink)}
+    .lst-card p{font-size:.875rem;margin:0;color:var(--muted)}
+    .lst-tag{display:inline-block;font-size:.72rem;font-weight:800;color:#86EFAC;background:rgba(153,69,255,.14);border:1px solid rgba(20,241,149,.22);border-radius:4px;padding:.12rem .4rem;margin-bottom:.4rem;letter-spacing:.3px;text-transform:uppercase}
+
+    @media(min-width:860px){
+      .steps{grid-template-columns:repeat(4,1fr)}
+      .grid-2{grid-template-columns:1fr 1fr}
+      .callout-grid{grid-template-columns:1fr 1fr}
+      .lst-grid{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero" role="banner">
+  <div class="container hero-grid">
+    <div class="hero-card" aria-label="Intro">
+      <div class="brand-row">
+        <img class="brand-logo" src="lido.staking.logo.png" alt="Lido Staking logo">
+        <div>
+          <div class="muted" style="font-weight:800;letter-spacing:.2px;">Operational Guide</div>
+          <div class="muted-2" style="font-size:.95rem;">Tower BFT&nbsp;•&nbsp;Proof of History&nbsp;•&nbsp;Vote Credits&nbsp;•&nbsp;Jito MEV&nbsp;•&nbsp;mSOL / jitoSOL / Sanctum</div>
+        </div>
+      </div>
+
+      <h1>Solana Staking</h1>
+      <p class="lead">
+        A practical, technically detailed guide to staking SOL on Solana: how Tower BFT consensus
+        and Proof of History work together to achieve sub-second confirmation, how vote credits
+        determine your staking rewards, what Jito MEV means for validator yield, how to compare
+        <strong>APY vs APR</strong> across Solana validators, and how mSOL, jitoSOL, and
+        Sanctum's LST aggregator provide liquid alternatives to native delegation.
+      </p>
+
+      <div class="cta-center">
+        <a href="https://lido-staking.net/" class="cta" target="_blank" rel="noopener" aria-label="Explore staking options with Lido">
+          Explore Staking Options &nbsp;→
+        </a>
+      </div>
+
+      <div class="note" style="margin-top:1.25rem;">
+        <strong>Core distinction:</strong> Solana staking has no slashing of delegator principal —
+        a delinquent or misbehaving validator is simply removed from earning vote credits, and
+        delegators to that validator earn reduced or zero rewards for that epoch. Principal is safe;
+        only yield is at risk from validator performance failures.
+        This is a significant safety property for delegators compared to Cosmos Hub, Polkadot, or Ethereum.
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="step-guide" aria-labelledby="how-works">
+  <div class="container">
+    <h2 id="how-works">How SOL Delegation Works: End-to-End (Stake → Activate → Earn → Unstake)</h2>
+    <div class="steps" role="list">
+      <article class="step" role="listitem">
+        <div class="icon">①</div>
+        <h3>Create a stake account and delegate</h3>
+        <p>
+          Solana staking works through on-chain stake accounts — separate from your main wallet.
+          You create a stake account, fund it with SOL, and delegate to a validator.
+          The minimum is 0.001 SOL plus rent reserve (~0.00228 SOL for the stake account).
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">②</div>
+        <h3>Stake warms up over one epoch</h3>
+        <p>
+          Newly delegated SOL does not immediately earn rewards. It "warms up" during the
+          current epoch and becomes fully active at the next epoch boundary.
+          Solana epochs last approximately 2–3 days (432,000 slots at ~0.5s each).
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">③</div>
+        <h3>Rewards distribute at epoch boundaries</h3>
+        <p>
+          At the end of each epoch, rewards are calculated based on each validator's vote
+          credits — the cumulative score earned for correctly voting on block confirmations.
+          Rewards are automatically added to your stake account and compound for the next epoch.
+        </p>
+      </article>
+      <article class="step" role="listitem">
+        <div class="icon">④</div>
+        <h3>Unstake: deactivation and cooldown</h3>
+        <p>
+          To withdraw, you deactivate your stake. It cools down over one epoch (~2–3 days)
+          and becomes withdrawable at the next epoch boundary.
+          During cooldown, the stake earns no rewards.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<main class="container" role="main">
+
+  <section class="card toc" aria-label="Table of Contents">
+    <strong>On this page (Solana Staking):</strong>
+    <ul>
+      <li><a href="#overview">Overview — Solana's design philosophy and staking model</a></li>
+      <li><a href="#poh">Proof of History: the cryptographic clock that enables speed</a></li>
+      <li><a href="#tower-bft">Tower BFT: how Solana consensus reaches finality</a></li>
+      <li><a href="#vote-credits">Vote credits: the mechanism that determines your rewards</a></li>
+      <li><a href="#rewards">Rewards: inflation, Jito MEV, and what drives SOL yield</a></li>
+      <li><a href="#apy-apr">APY / APR: how to compare correctly for SOL</a></li>
+      <li><a href="#how-to">How to stake SOL: step-by-step tutorial</a></li>
+      <li><a href="#calculator">Calculator: net yield estimation framework</a></li>
+      <li><a href="#liquid">Liquid staking: mSOL, jitoSOL, and Sanctum</a></li>
+      <li><a href="#delinquent">Delinquent validators: detection and response</a></li>
+      <li><a href="#review">Review: legitimacy signals and what to watch</a></li>
+      <li><a href="#safety">Risks: no delegator slashing, but yield and key risks</a></li>
+      <li><a href="#comparison">Comparison: native delegation vs liquid staking</a></li>
+      <li><a href="#best-practices">Best practices: high-impact operational rules</a></li>
+      <li><a href="#troubleshooting">Troubleshooting and common issues</a></li>
+      <li><a href="#eeat">Sources and references</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </section>
+
+  <section class="card" id="overview">
+    <h2>Overview: Solana's Design Philosophy and Staking Model</h2>
+    <p>
+      Solana is a high-performance Layer 1 blockchain designed around three core technical
+      innovations that work together to achieve high throughput with low latency: Proof of History
+      (a verifiable delay function used as a decentralised clock), Tower BFT (a PoH-optimised BFT
+      consensus algorithm), and a parallel transaction processing pipeline (Sealevel).
+      Official developer documentation at
+      <a href="https://solana.com/docs/economics/staking" target="_blank" rel="noopener nofollow" class="src">solana.com/docs/economics/staking</a>.
+    </p>
+
+    <div class="pillbar" aria-label="Key topics">
+      <span class="pill">Proof of History</span>
+      <span class="pill">Tower BFT</span>
+      <span class="pill">Vote Credits</span>
+      <span class="pill">Jito MEV</span>
+      <span class="pill">No Delegator Slashing</span>
+      <span class="pill">mSOL / jitoSOL</span>
+    </div>
+
+    <div class="callout-grid" role="list">
+      <div class="mini" role="listitem">
+        <h3>Why Solana's staking model differs from most PoS</h3>
+        <p class="muted">
+          On most PoS networks, validators propose and attest to blocks. On Solana, validators
+          vote on each block using a dedicated voting transaction — and those votes cost real
+          SOL in transaction fees (approximately 1.1 SOL per day per validator in vote costs).
+          This voting cost is factored into the commission structure you see as a delegator.
+          High-performing validators who earn more vote credits offset this cost; delinquent
+          validators burn SOL on vote fees without earning proportional rewards.
+        </p>
+        <div class="kpi-badges">
+          <span>Vote-cost model</span><span>~1.1 SOL/day vote fees</span><span>Performance-critical</span>
+        </div>
+      </div>
+      <div class="mini" role="listitem">
+        <h3>No delegator slashing — a unique Solana property</h3>
+        <p class="muted">
+          Solana does not slash delegator principal. If a validator misbehaves or goes offline,
+          delegators simply earn fewer (or zero) rewards for that epoch — their SOL principal
+          is unaffected. This is a significant safety advantage over Cosmos Hub (5% slash),
+          Polkadot (0.1–100% slash), and Ethereum (slashing for equivocation).
+          The risk for Solana delegators is yield loss, not principal loss.
+        </p>
+        <div class="kpi-badges">
+          <span>No principal slash</span><span>Yield risk only</span><span>Unique safety property</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>Solana performance context (2026):</strong> Solana has become one of the most
+      actively used blockchains by transaction volume, with thousands of validators globally.
+      Network health, validator statistics, and ecosystem TVL are tracked independently by
+      <a href="https://solanabeach.io/" target="_blank" rel="noopener nofollow" class="src">SolanaBeach.io</a>
+      and
+      <a href="https://validators.app/" target="_blank" rel="noopener nofollow" class="src">Validators.app</a>.
+    </div>
+  </section>
+
+  <section class="card" id="poh">
+    <h2>Proof of History: The Cryptographic Clock That Enables Speed</h2>
+    <p>
+      Proof of History (PoH) is Solana's most distinctive innovation — a verifiable delay
+      function (VDF) that creates a historical record of events, acting as a shared clock
+      across the network. It is not consensus; it is the timestamp mechanism that allows
+      Solana's consensus to operate without waiting for all nodes to agree on time.
+      The original PoH paper is available at
+      <a href="https://solana.com/solana-whitepaper.pdf" target="_blank" rel="noopener nofollow" class="src">solana.com/solana-whitepaper.pdf</a>.
+    </p>
+
+    <!-- PoH sequence visual -->
+    <div style="margin:.75rem 0 .25rem;font-size:.82rem;color:var(--muted-2);">PoH sequence: continuous SHA-256 hash chain with transactions embedded at verifiable positions</div>
+    <div class="poh-strip" aria-label="Proof of History hash sequence">
+      <div class="poh-hash">H₀<br><small>seed</small></div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash">H₁</div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash tx">H₂<br><small>Tx embedded</small></div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash">H₃</div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash slot">H₄<br><small>Slot boundary</small></div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash">H₅</div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash tx">H₆<br><small>Tx embedded</small></div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash">H₇</div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash slot">H₈<br><small>Slot boundary</small></div>
+      <span class="poh-arrow">→</span>
+      <div class="poh-hash" style="opacity:.5">…</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>How PoH creates a verifiable time record</h3>
+        <p class="muted">
+          The leader (block producer) continuously runs SHA-256 hash iterations — each hash
+          takes real computational time to produce. Transactions are inserted into the hash
+          chain at specific positions, creating a cryptographically verifiable proof that the
+          transaction occurred at a specific point in the hash sequence.
+          Any node can verify the entire PoH sequence in parallel without running the hashes
+          sequentially — making verification fast.
+        </p>
+        <div class="kpi-badges"><span>SHA-256 VDF</span><span>Embedded timestamps</span><span>Fast parallel verification</span></div>
+      </div>
+      <div class="mini">
+        <h3>Why PoH eliminates the consensus clock problem</h3>
+        <p class="muted">
+          Traditional BFT consensus spends significant time agreeing on what the current time is —
+          because nodes cannot trust each other's clocks. PoH provides a shared, verifiable clock
+          that all nodes can independently verify by re-running the hash chain.
+          This eliminates clock disagreements from consensus and allows Tower BFT to run
+          much faster than it otherwise could.
+        </p>
+        <div class="kpi-badges"><span>No clock sync needed</span><span>Enables &lt;0.5s slots</span><span>Consensus efficiency</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>What PoH means for staking:</strong> The 400–500ms slot time that PoH enables
+      is what makes Solana's high transaction throughput possible. For stakers, this means
+      rewards accumulate faster (more slots per epoch = more voting opportunities per validator)
+      and the network is more sensitive to validator latency — a slow validator misses voting
+      opportunities that directly reduce its vote credit score and your rewards.
+    </div>
+  </section>
+
+  <section class="card" id="tower-bft">
+    <h2>Tower BFT: How Solana Consensus Reaches Finality</h2>
+    <p>
+      Tower BFT is Solana's consensus algorithm — a PoH-optimised version of Practical BFT
+      that uses the PoH hash chain as a shared clock to avoid the expensive clock synchronisation
+      overhead of traditional BFT algorithms.
+      Technical specification at
+      <a href="https://docs.solanalabs.com/consensus/tower-bft" target="_blank" rel="noopener nofollow" class="src">docs.solanalabs.com — Tower BFT</a>.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>How Tower BFT voting works</h3>
+        <p class="muted">
+          Validators submit vote transactions for each new block, recorded on-chain.
+          Each vote locks the validator's stake on that block for an exponentially increasing
+          lockout period — voting for a competing fork requires waiting through the lockout.
+          This makes double-voting economically irrational: the cost of waiting through an
+          exponential lockout greatly exceeds any benefit from voting on a competing chain.
+        </p>
+        <div class="kpi-badges"><span>Exponential lockout</span><span>Anti-fork incentive</span><span>Votes recorded on-chain</span></div>
+      </div>
+      <div class="mini">
+        <h3>Optimistic confirmation vs finality</h3>
+        <p class="muted">
+          Solana uses two confirmation levels: optimistic confirmation (⅔+ stake voted on a block —
+          very fast, ~400ms) and true finality (the block is buried deep enough in confirmed votes
+          that reversal is computationally impossible — slower, ~12.8s). For staking, only
+          confirmed blocks generate vote credits — validators must respond quickly to avoid
+          missing optimistically confirmed blocks.
+        </p>
+        <div class="kpi-badges"><span>⅔ stake threshold</span><span>~400ms optimistic</span><span>~12.8s true finality</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Vote latency and delegator yield connection:</strong> Tower BFT rewards validators
+      that vote quickly and accurately. A validator that votes late on blocks (high latency)
+      earns fewer maximum vote credits. Vote credit score is the direct multiplier on your
+      staking rewards — a validator at 95% vote credit efficiency earns 5% less in rewards
+      than a 100% efficient validator, for the same commission rate.
+    </div>
+  </section>
+
+  <section class="card" id="vote-credits">
+    <h2>Vote Credits: The Mechanism That Directly Determines Your Rewards</h2>
+    <p>
+      Vote credits are the Solana-specific metric that determines how much of the epoch's
+      reward pool a validator receives. Understanding vote credits is the key to choosing
+      a good Solana validator. Credit data per validator is available at
+      <a href="https://validators.app/" target="_blank" rel="noopener nofollow" class="src">Validators.app</a>
+      and
+      <a href="https://solanabeach.io/validators" target="_blank" rel="noopener nofollow" class="src">SolanaBeach.io</a>.
+    </p>
+
+    <div class="grid-2">
+      <div class="mini">
+        <h3>How vote credits are earned</h3>
+        <p class="muted">
+          Each time a validator successfully votes on a block that is subsequently confirmed,
+          it earns vote credits. The exact credit amount depends on how quickly the vote
+          was submitted relative to the slot — a latency-aware credit system introduced in
+          SIMD-0033 rewards timely votes more than late votes. A validator that consistently
+          votes in the first few slots after a block is proposed earns maximum credits.
+        </p>
+        <div class="kpi-badges"><span>Per-vote accumulation</span><span>Latency-weighted</span><span>SIMD-0033 credits</span></div>
+      </div>
+      <div class="mini">
+        <h3>How vote credits translate to rewards</h3>
+        <p class="muted">
+          At each epoch boundary, rewards are distributed in proportion to each validator's
+          vote credit share of the total credits earned by all validators in that epoch.
+          A validator with 1% of total vote credits earns approximately 1% of that epoch's
+          reward pool (adjusted for their stake weight). Commission is deducted from this
+          before delegators receive their portion.
+        </p>
+        <div class="kpi-badges"><span>Proportional to credits</span><span>Epoch-boundary payout</span><span>Auto-compounding</span></div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:1rem;">Vote credit efficiency comparison across validator tiers</h3>
+    <div class="vc-bars" aria-label="Vote credit efficiency tiers">
+      <div class="vc-row">
+        <span class="vc-lbl">Tier 1 (top performers)</span>
+        <div class="vc-track"><div class="vc-fill" style="width:100%"></div></div>
+        <span class="vc-val ok">98–100%</span>
+      </div>
+      <div class="vc-row">
+        <span class="vc-lbl">Tier 2 (good validators)</span>
+        <div class="vc-track"><div class="vc-fill" style="width:90%"></div></div>
+        <span class="vc-val ok">90–97%</span>
+      </div>
+      <div class="vc-row">
+        <span class="vc-lbl">Tier 3 (acceptable)</span>
+        <div class="vc-track"><div class="vc-fill" style="width:75%"></div></div>
+        <span class="vc-val warn">75–89%</span>
+      </div>
+      <div class="vc-row">
+        <span class="vc-lbl">Delinquent / poor</span>
+        <div class="vc-track"><div class="vc-fill" style="width:30%;background:linear-gradient(90deg,#7F1D1D,#F87171)"></div></div>
+        <span class="vc-val err">&lt;75%</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Practical rule:</strong> Only delegate to validators with trailing epoch vote credit
+      efficiency above 90%. Validators below 80% efficiency are earning meaningfully less per epoch
+      and represent poor delegation choices. Check the past 10 epochs of credit score on
+      Validators.app before delegating — one bad epoch is acceptable; consistent underperformance is not.
+    </div>
+  </section>
+
+  <section class="card" id="rewards">
+    <h2>Rewards: Inflation, Jito MEV, and What Drives SOL Staking Yield</h2>
+    <p>
+      SOL staking rewards come from two sources: protocol inflation (the primary current source)
+      and MEV via the Jito ecosystem (a growing secondary source). Current inflation rate and
+      epoch reward data are available at
+      <a href="https://solanabeach.io/" target="_blank" rel="noopener nofollow" class="src">SolanaBeach.io</a>.
+    </p>
+    <ul>
+      <li><strong>SOL inflation:</strong> Solana launched with an initial inflation rate of 8% per year, decreasing by 15% annually toward a long-run target of 1.5%. In 2026, the inflation rate is approximately 4–5%. Of this, 95% goes to stakers and validators; 5% to the foundation. Current inflation rate is a protocol parameter verifiable on-chain.</li>
+      <li><strong>Transaction fees:</strong> 50% of all Solana transaction fees are burned; 50% go to validators. The fee revenue component grows with network activity but is currently small relative to inflation.</li>
+      <li><strong>Jito MEV (priority fees via block engine):</strong> Jito Labs operates a block engine that captures MEV and distributes it as "tips" to validators running the Jito-Solana validator client. Validators sharing Jito tips with delegators earn meaningfully higher effective APY than non-Jito validators. Jito data at <a href="https://jito.network/" target="_blank" rel="noopener nofollow" class="src">jito.network</a>.</li>
+      <li><strong>Commission structure:</strong> validators charge commission on inflation rewards. Jito tips may be handled separately — some validators share 100% of Jito tips; others take a commission. Always check both the inflation commission and the Jito tip-sharing policy when evaluating a validator.</li>
+    </ul>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>How Jito MEV adds to staking yield</h3>
+        <p class="muted">
+          Jito's block engine bundles MEV-producing transactions and auctions block space to
+          searchers. The auction proceeds ("tips") flow to validators running the Jito-Solana
+          client. Validators that pass these tips to delegators significantly boost effective APY.
+          At peak activity, Jito tips can add 1–3% additional APY on top of inflation rewards.
+          This is why jitoSOL liquid staking has become popular — it automatically captures
+          Jito tip revenue for all holders.
+        </p>
+        <div class="kpi-badges"><span>Block auction tips</span><span>+1–3% APY boost</span><span>Validator-level setting</span></div>
+      </div>
+      <div class="mini">
+        <h3>Vote costs and net validator economics</h3>
+        <p class="muted">
+          Solana validators pay approximately 1.1 SOL per day in vote transaction fees — a fixed
+          operational cost. Large validators with significant stake can absorb this easily; small
+          validators may find that vote costs exceed inflation earnings at low stake levels.
+          This creates a practical minimum viable stake size for validators — relevant when
+          evaluating whether a small validator is economically sustainable long-term.
+        </p>
+        <div class="kpi-badges"><span>~1.1 SOL/day vote cost</span><span>Break-even stake threshold</span><span>Validator sustainability</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Jito opt-in requirement:</strong> Not all validators run the Jito-Solana client or
+      share Jito tips with delegators. When comparing validators, check whether they run Jito
+      and what percentage of Jito tips they pass to delegators (Jito commission is separate from
+      inflation commission on some dashboards). Validators sharing 100% of Jito tips alongside
+      low inflation commission deliver the highest effective APY.
+    </div>
+  </section>
+
+  <section class="card" id="apy-apr">
+    <h2>APY / APR: How to Compare Correctly for SOL Staking</h2>
+    <p>
+      Solana rewards auto-compound at each epoch boundary — so the APY figure is the honest
+      expected return if you stay delegated for a full year. The main complexity is the
+      Jito tip component, which many validators report separately.
+    </p>
+
+    <table aria-label="APY vs APR for SOL staking">
+      <thead>
+        <tr><th>Term</th><th>Solana context</th><th>What to watch</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Gross inflation APR</td>
+          <td>Protocol inflation rate distributed to stakers (~4–5%)</td>
+          <td>Verify current rate on SolanaBeach.io — decreases ~15%/year per inflation schedule</td>
+        </tr>
+        <tr>
+          <td>Net APR (inflation only)</td>
+          <td>APR after validator commission on inflation rewards</td>
+          <td>Primary comparison metric for non-Jito validators; check commission on Validators.app</td>
+        </tr>
+        <tr class="highlight">
+          <td>Jito tip APY</td>
+          <td>Additional yield from MEV tip sharing (variable)</td>
+          <td>Check validator's Jito commission and tip-sharing policy separately — not always included in quoted APY</td>
+        </tr>
+        <tr>
+          <td>Total effective APY</td>
+          <td>Inflation net APR + Jito tip yield + auto-compound</td>
+          <td>The honest total return estimate; use Validators.app or SolanaCompass for combined figures</td>
+        </tr>
+        <tr class="highlight">
+          <td>Real yield</td>
+          <td>USD-adjusted return after SOL price movement</td>
+          <td>SOL price volatility dominates — 6% APY in SOL is not a USD guarantee</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Quick calculation for Solana:</strong> Net APR (inflation) + Jito tip APY (if validator
+      shares tips) − validator vote cost drag (small) = total effective APY.
+      Use <a href="https://www.solanacompass.com/" target="_blank" rel="noopener nofollow" class="src">SolanaCompass.com</a>
+      for combined effective APY estimates that include both inflation and Jito components.
+    </div>
+  </section>
+
+  <section class="card" id="how-to">
+    <h2>How to Stake SOL: Step-by-Step Tutorial</h2>
+    <ol>
+      <li><strong>Set up a Solana wallet:</strong>
+        <a href="https://phantom.app/" target="_blank" rel="noopener nofollow" class="src">Phantom</a>
+        is the most widely used Solana wallet with built-in staking support. Solflare is another strong option with advanced validator selection features. Download only from official developer sites — fake Phantom apps are a primary attack vector.</li>
+      <li><strong>Fund your wallet with SOL:</strong> transfer SOL from an exchange to your Phantom/Solflare address. Keep at least 0.1 SOL liquid for transaction fees and rent.</li>
+      <li><strong>Research validators:</strong> use
+        <a href="https://validators.app/" target="_blank" rel="noopener nofollow" class="src">Validators.app</a>
+        or
+        <a href="https://www.solanacompass.com/" target="_blank" rel="noopener nofollow" class="src">SolanaCompass.com</a>
+        to evaluate validators on: vote credit efficiency (trailing 10 epochs), inflation commission, Jito tip sharing, stake concentration (avoid top-20 validators to support decentralisation), and data centre diversity.</li>
+      <li><strong>Delegate via your wallet:</strong> in Phantom, click "Start Earning SOL" → "Native Staking" → search for your chosen validator. Review commission before confirming. Transaction fee: ~0.000005 SOL. Stake account rent: ~0.00228 SOL (returned on unstake).</li>
+      <li><strong>Wait for activation:</strong> newly delegated SOL activates over one epoch (~2–3 days). You will see your stake as "activating" in your wallet until the epoch boundary.</li>
+      <li><strong>Monitor via SolanaBeach.io or Validators.app:</strong> check your validator's vote credit performance at each epoch. If credit efficiency drops below 85% for multiple consecutive epochs, prepare to redelegate.</li>
+      <li><strong>To unstake:</strong> deactivate in your wallet. The stake cools down over one epoch and is then withdrawable to your main balance.</li>
+    </ol>
+
+    <div class="note">
+      <strong>Key principle:</strong> For SOL staking, validator selection focused on vote credit
+      efficiency and Jito tip sharing is the highest-yield optimisation available.
+      A validator with 99% vote credit efficiency + Jito tips dramatically outperforms one
+      with 90% vote credits and no Jito sharing — even with the same stated inflation commission.
+    </div>
+  </section>
+
+  <section class="card" id="calculator">
+    <h2>Calculator: Net Yield Estimation for SOL</h2>
+    <p>
+      SOL yield calculation has two components — inflation rewards and Jito tips —
+      that must be modelled separately for an accurate estimate. Current parameters from
+      <a href="https://solanabeach.io/" target="_blank" rel="noopener nofollow" class="src">SolanaBeach.io</a>.
+    </p>
+
+    <table aria-label="SOL staking calculator inputs">
+      <thead>
+        <tr><th>Input</th><th>Meaning</th><th>Solana-specific note</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>SOL stake amount</td>
+          <td>Your delegated principal</td>
+          <td>No minimum beyond rent; rewards scale proportionally — 1 SOL earns same % as 10,000 SOL</td>
+        </tr>
+        <tr>
+          <td>Current inflation APR</td>
+          <td>Protocol inflation rate (~4–5% in 2026)</td>
+          <td>Decreasing per Solana's schedule — check current rate on SolanaBeach.io</td>
+        </tr>
+        <tr class="highlight">
+          <td>Inflation commission %</td>
+          <td>Validator's cut of inflation rewards</td>
+          <td>Most competitive validators: 0–8%; verify on Validators.app</td>
+        </tr>
+        <tr>
+          <td>Vote credit efficiency %</td>
+          <td>Validator's actual vote credit score vs maximum</td>
+          <td>Multiplies your effective inflation APR — 95% efficiency × 4.5% APR = 4.275% effective</td>
+        </tr>
+        <tr class="highlight">
+          <td>Jito tip APY (if applicable)</td>
+          <td>Additional yield from MEV tip sharing</td>
+          <td>Variable: ~0.5–3% additional APY; check if validator runs Jito and their tip commission</td>
+        </tr>
+        <tr>
+          <td>Auto-compound frequency</td>
+          <td>Every ~2–3 days (one epoch) — automatic</td>
+          <td>No manual action required; rewards auto-add to stake account each epoch</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Example: 100 SOL, top Jito validator</h3>
+        <p class="muted">Inflation APR 4.5%, commission 7%, vote credits 99% → net inflation APR ≈ 4.16%. Jito tips ~1.5% additional (100% shared) → total effective APY ≈ 5.7%. Annual rewards: ~5.7 SOL. Auto-compounds every epoch. No gas cost for compounding.</p>
+      </div>
+      <div class="mini">
+        <h3>Example: 100 SOL, no-Jito validator</h3>
+        <p class="muted">Same inflation APR 4.5%, commission 5%, vote credits 96% → net inflation APR ≈ 4.1%. No Jito tips. Total effective APY ≈ 4.1%. Annual rewards: ~4.1 SOL. The Jito-enabled validator earns ~39% more yield at comparable commission — Jito participation is a significant differentiator.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Jito tip significance:</strong> The difference in effective APY between a high-quality
+      Jito-sharing validator and a non-Jito validator can be 1–3% additional APY —
+      representing up to 50%+ more annual yield at the same base commission.
+      Jito participation has become arguably the most important single criterion for
+      Solana validator selection as of 2025–2026.
+    </div>
+  </section>
+
+  <section class="card" id="liquid">
+    <h2>Liquid Staking: mSOL, jitoSOL, and Sanctum</h2>
+    <p>
+      Three distinct approaches to Solana liquid staking have emerged, each with different
+      design philosophies and yield profiles. The Solana liquid staking ecosystem is tracked at
+      <a href="https://defillama.com/chain/Solana" target="_blank" rel="noopener nofollow" class="src">DeFiLlama — Solana</a>.
+    </p>
+
+    <div class="lst-grid" role="list">
+      <div class="lst-card" role="listitem">
+        <span class="lst-tag">Pool LST</span>
+        <h3>Marinade Finance — mSOL</h3>
+        <p>The original Solana liquid staking protocol. Deposit SOL, receive mSOL — a reward-bearing token whose exchange rate appreciates as staking rewards accrue. Marinade uses automated validator selection optimised for yield and decentralisation. mSOL is the most liquid Solana LST with widespread DeFi acceptance. Protocol fee: ~6% of rewards.</p>
+        <div class="kpi-badges" style="margin-top:.5rem"><span>mSOL reward-bearing</span><span>Auto validator selection</span><span>Widest DeFi acceptance</span></div>
+      </div>
+      <div class="lst-card" role="listitem">
+        <span class="lst-tag">MEV LST</span>
+        <h3>Jito Network — jitoSOL</h3>
+        <p>Jito's liquid staking product that specifically routes stake to Jito-client validators and captures MEV tips for token holders. jitoSOL earns both inflation rewards and Jito tip revenue — typically delivering higher effective APY than mSOL. Protocol fee: 4% of staking rewards. Best for users who want maximum APY from Solana staking.</p>
+        <div class="kpi-badges" style="margin-top:.5rem"><span>jitoSOL + MEV tips</span><span>Higher APY</span><span>Jito ecosystem</span></div>
+      </div>
+      <div class="lst-card" role="listitem">
+        <span class="lst-tag">Aggregator</span>
+        <h3>Sanctum — Infinity Pool &amp; LST Router</h3>
+        <p>Sanctum is a Solana LST aggregator and liquidity layer that enables any LST to have deep liquidity. Sanctum's Infinity pool accepts all LSTs and its router finds the best LST yield for deposits. Sanctum enables validator-specific LSTs (e.g. bSOL, compassSOL) to maintain liquidity via shared pool. Documentation at <a href="https://sanctum.so/" target="_blank" rel="noopener nofollow" class="src">sanctum.so</a>.</p>
+        <div class="kpi-badges" style="margin-top:.5rem"><span>LST aggregator</span><span>Universal liquidity</span><span>Validator LSTs</span></div>
+      </div>
+    </div>
+
+    <table aria-label="Native vs liquid staking SOL comparison" style="margin-top:1rem;">
+      <thead>
+        <tr><th>Dimension</th><th>Native delegation</th><th>Marinade (mSOL)</th><th>Jito (jitoSOL)</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Unstaking period</td>
+          <td class="warn">~2–3 days (one epoch)</td>
+          <td class="ok">Instant via Marinade unstake (small fee)</td>
+          <td class="ok">Instant via DEX or epoch-based</td>
+        </tr>
+        <tr>
+          <td>MEV/Jito tips</td>
+          <td class="warn">Depends on validator choice</td>
+          <td class="warn">Partial (some Jito validators in pool)</td>
+          <td class="ok">Full — Jito-optimised by design</td>
+        </tr>
+        <tr class="highlight">
+          <td>Effective APY (approx)</td>
+          <td>5–7% (Jito validator)</td>
+          <td>~6–6.5% (variable)</td>
+          <td class="ok">~6.5–8% (includes MEV)</td>
+        </tr>
+        <tr>
+          <td>Smart contract risk</td>
+          <td class="ok">None — native</td>
+          <td class="warn">Marinade contract risk</td>
+          <td class="warn">Jito contract risk</td>
+        </tr>
+        <tr class="highlight">
+          <td>DeFi composability</td>
+          <td class="warn">SOL locked in stake account</td>
+          <td class="ok">mSOL usable in Solana DeFi</td>
+          <td class="ok">jitoSOL usable in Solana DeFi</td>
+        </tr>
+        <tr>
+          <td>Validator diversity</td>
+          <td class="ok">Your choice</td>
+          <td class="ok">Automated diversification</td>
+          <td class="warn">Jito-client validators only</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Recommendation:</strong> For pure yield maximisation, jitoSOL delivers the highest
+      effective APY through MEV capture. For the safest approach with validator control,
+      native delegation to a high-quality Jito-participating validator is comparable in yield
+      with lower smart contract risk. mSOL is the best choice for DeFi use cases where
+      wide protocol acceptance matters more than marginal APY differences.
+    </div>
+  </section>
+
+  <section class="card" id="delinquent">
+    <h2>Delinquent Validators: Detection and Response</h2>
+    <p>
+      A delinquent validator is one that has stopped submitting votes — either due to software
+      failure, network issues, or hardware problems. Delegating to a delinquent validator
+      means earning zero rewards for that epoch. No principal is lost, but yield is forfeited.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>How to detect delinquency</h3>
+        <p class="muted">
+          Check your validator's status on SolanaBeach.io or Validators.app using the validator's
+          vote account address. A delinquent validator shows "delinquent" status and will have
+          a recent epoch vote credit score of 0 or near-0. Most Solana wallets also display
+          a warning if your delegated validator is detected as delinquent.
+          Alerts can be set on <a href="https://cogentcrypto.io/" target="_blank" rel="noopener nofollow" class="src">Cogent Crypto</a>
+          for validator status changes.
+        </p>
+        <div class="kpi-badges"><span>0 vote credits</span><span>Wallet warning</span><span>Cogent alerts</span></div>
+      </div>
+      <div class="mini">
+        <h3>What to do when your validator goes delinquent</h3>
+        <p class="muted">
+          Redelegate to a different validator as soon as possible. On Solana, redelegation is
+          done by deactivating your current stake, waiting one epoch (~2–3 days) for the SOL
+          to become available, and then creating a new stake account delegated to a different validator.
+          Some wallets support "stake merging" to simplify this process.
+          The epoch delay means acting early when you detect issues is important.
+        </p>
+        <div class="kpi-badges"><span>Deactivate immediately</span><span>1-epoch wait</span><span>Redelegate to new validator</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Delinquency frequency on Solana:</strong> Short delinquency events (a few slots to
+      a few minutes) are relatively common and have minimal impact on vote credit scores.
+      Extended delinquency (hours or days) is uncommon for professional validators and should
+      prompt redelegation. Monitoring your validator at least weekly is the appropriate cadence —
+      epoch boundaries are the relevant time unit, not individual blocks.
+    </div>
+  </section>
+
+  <section class="card" id="review">
+    <h2>Legitimacy, Trust Signals, and What to Watch (2025–2026)</h2>
+    <p>
+      Evaluating Solana staking legitimacy focuses on validator quality, wallet security,
+      and liquid staking protocol audits. Network health analytics from
+      <a href="https://solanabeach.io/" target="_blank" rel="noopener nofollow" class="src">SolanaBeach.io</a>
+      and
+      <a href="https://www.validators.app/stats" target="_blank" rel="noopener nofollow" class="src">Validators.app/stats</a>.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>Validator legitimacy signals</h3>
+        <p class="muted">
+          On-chain identity with verifiable keybase link and contact information.
+          Consistent vote credit efficiency above 95% over trailing 20 epochs.
+          Published data centre location and hardware specifications.
+          Transparent Jito participation policy and tip-sharing percentage.
+          Reasonable stake concentration (not in top 10 by stake — prefer validators that
+          support network decentralisation).
+          Active community presence and responsive support channel.
+        </p>
+      </div>
+      <div class="mini">
+        <h3>Red flags to investigate</h3>
+        <p class="muted">
+          0% commission with new validator and no history — commission can change at any time.
+          Undisclosed data centre infrastructure — validators sharing physical resources have
+          correlated failure risk.
+          Not participating in Jito without clear explanation.
+          Stake concentration in single cloud provider / geographic region.
+          Any "SOL staking reward" offer that requires sending SOL to claim.
+        </p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>2025/2026 specific threat:</strong> Fake Phantom Wallet apps across iOS, Android,
+      and Chrome extensions are the primary vector for Solana fund theft. Solana's fast
+      transaction finality makes theft extremely rapid once a seed phrase is compromised.
+      Download Phantom exclusively from <a href="https://phantom.app/" target="_blank" rel="noopener nofollow" class="src">phantom.app</a>
+      and verify the app developer ID in the relevant app store. Never restore a wallet
+      from an unofficial source or enter your seed phrase on any non-official site.
+    </div>
+  </section>
+
+  <section class="card" id="safety">
+    <h2>Risks: No Delegator Slashing, But Yield and Key Risks Remain</h2>
+    <p>
+      Solana's risk profile for delegators is comparatively favourable because delegator
+      principal cannot be slashed — but several important risks remain.
+    </p>
+
+    <table aria-label="SOL staking risk factors">
+      <thead>
+        <tr><th>Risk</th><th>Impact on Solana</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight">
+          <td>Delegator slashing</td>
+          <td class="ok">Does NOT exist on Solana — delegator principal is safe</td>
+          <td>N/A — unique Solana safety property</td>
+        </tr>
+        <tr>
+          <td>Validator delinquency (yield loss)</td>
+          <td class="warn">Earn zero rewards for affected epochs</td>
+          <td>Monitor vote credit scores weekly; redelegate promptly if delinquency detected</td>
+        </tr>
+        <tr class="highlight">
+          <td>Commission change</td>
+          <td class="warn">Validators can change commission with no prior notice</td>
+          <td>Monitor commission on Validators.app; set up alerts via Cogent Crypto</td>
+        </tr>
+        <tr>
+          <td>Network outages</td>
+          <td class="warn">Solana has experienced network interruptions historically</td>
+          <td>Historical issue — Solana has improved stability significantly. Monitor network health at SolanaBeach.io</td>
+        </tr>
+        <tr class="highlight">
+          <td>Liquid staking smart contract</td>
+          <td class="err">Principal loss if Marinade/Jito contracts are exploited</td>
+          <td>Use only audited protocols with multi-year mainnet track records; verify audit reports</td>
+        </tr>
+        <tr>
+          <td>SOL price volatility</td>
+          <td class="err">USD real return depends on SOL price</td>
+          <td>Model USD scenarios; nominal SOL APY does not protect against price decline</td>
+        </tr>
+        <tr class="highlight">
+          <td>Phishing / fake wallet</td>
+          <td class="err">Seed phrase theft → immediate irreversible fund loss</td>
+          <td>Phantom from phantom.app only; hardware wallet for significant SOL; never enter seed online</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Solana's no-delegator-slashing property in context:</strong> This is a genuinely
+      significant safety advantage over Cosmos Hub (5% delegator slash), Polkadot (proportional
+      delegator slash), and Ethereum PoS (validator-level slash that affects protocol operations).
+      For delegators focused on principal preservation, Solana's yield-risk-only model is
+      easier to manage than networks where validator misbehaviour directly reduces your SOL balance.
+    </div>
+  </section>
+
+  <section class="card" id="comparison">
+    <h2>Comparison: Native SOL Delegation vs mSOL vs jitoSOL</h2>
+    <p>
+      The right choice depends on your yield priority, liquidity needs, and
+      comfort with additional smart contract layers.
+    </p>
+
+    <div class="callout-grid">
+      <div class="mini">
+        <h3>When native delegation wins</h3>
+        <p class="muted">
+          You want zero smart contract risk beyond the base Solana protocol.
+          You want to choose your specific validators to support network decentralisation.
+          You are comfortable with the ~2–3 day epoch unstake period.
+          You choose a high-quality Jito-participating validator and enjoy comparable APY
+          to jitoSOL with lower protocol risk.
+        </p>
+        <div class="kpi-badges"><span>Lowest risk</span><span>Validator control</span><span>Comparable APY via Jito</span></div>
+      </div>
+      <div class="mini">
+        <h3>When liquid staking wins</h3>
+        <p class="muted">
+          You need instant liquidity (Marinade's instant unstake or DEX secondary market).
+          You want to use SOL as DeFi collateral while earning staking yield simultaneously.
+          You want automated validator diversification across many pools.
+          jitoSOL is optimal if maximising MEV yield is the primary goal — it delivers the
+          highest effective APY in the Solana staking ecosystem.
+        </p>
+        <div class="kpi-badges"><span>Instant liquidity</span><span>DeFi collateral</span><span>jitoSOL for max APY</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Decision shortcut:</strong> If you plan to use Solana DeFi, jitoSOL gives the
+      highest yield + instant liquidity + broad DeFi support. If you want the simplest approach
+      with zero smart contract risk, native delegation to a Jito-participating validator
+      with &gt;97% vote credits delivers comparable APY. mSOL is the best middle ground
+      for DeFi users who prefer Marinade's automated validator diversification.
+    </div>
+  </section>
+
+  <section class="card" id="best-practices">
+    <h2>Best Practices: High-Impact Operational Rules for SOL Stakers</h2>
+    <ul>
+      <li><strong>Prioritise vote credit efficiency over commission rate:</strong> a 5% commission validator with 99% vote credits earns more net yield than a 0% commission validator with 90% vote credits. Check trailing vote credit score on Validators.app before commission rate.</li>
+      <li><strong>Evaluate Jito participation explicitly:</strong> check whether your target validator runs the Jito-Solana client and what percentage of tips they share. For maximum yield, Jito participation is the most important single criterion in 2025–2026.</li>
+      <li><strong>Download Phantom or Solflare from official sources only:</strong> phantom.app, solflare.com. Fake Solana wallet apps are the highest-volume crypto theft vector globally in 2025–2026. Verify the app developer ID in every app store listing.</li>
+      <li><strong>Hardware wallet for significant SOL positions:</strong> Ledger supports Solana natively via the Solana app. Pair with Phantom or Solflare for staking with hardware security.</li>
+      <li><strong>Avoid delegating to the top 10–20 validators by stake:</strong> excessive stake concentration reduces Solana's decentralisation and BFT security. The Solana Foundation publishes validator decentralisation data — choosing validators outside the top concentration tier actively supports network health.</li>
+      <li><strong>Monitor vote credits every epoch (~2–3 days):</strong> set up alerts on Cogent Crypto or check SolanaBeach.io regularly. Extended delinquency should trigger immediate redelegation action.</li>
+      <li><strong>Keep at least 0.1 SOL liquid outside your stake account:</strong> for transaction fees, rent, and quick redelegation if your validator goes delinquent. Never stake 100% of your SOL.</li>
+      <li><strong>For liquid staking: verify smart contract audits:</strong> Marinade and Jito have published audit reports — verify current audit status on their official documentation before depositing significant SOL.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Most common SOL staking mistake:</strong> Selecting the first validator in the default
+      wallet list or the validator with the highest displayed APY without checking vote credit efficiency.
+      Many default-listed validators in wallet interfaces are exchange validators with high stake
+      concentration — poor for network health. Some high-APY-displaying validators achieve this
+      by showing APY including MNDE or other non-SOL rewards that are volatile and not guaranteed.
+      Always verify: (1) vote credit score, (2) Jito participation, (3) commission, in that order.
+    </div>
+  </section>
+
+  <section class="card" id="troubleshooting">
+    <h2>Troubleshooting: Common Issues, Root Causes, and Fixes</h2>
+
+    <h3>"My stake shows 'activating' for more than one day"</h3>
+    <ul>
+      <li>Solana stake activation takes one full epoch (~2–3 days). If you delegated near the start of an epoch, you may wait the full epoch duration before "activating" transitions to "active." Check the current epoch and estimated time to next boundary on SolanaBeach.io.</li>
+      <li>Verify the delegation transaction was confirmed on-chain. Check your wallet's transaction history or search your stake account address on Solana Explorer — if the transaction was not confirmed, the delegation may need to be resubmitted.</li>
+    </ul>
+
+    <h3>"My rewards seem lower than expected this epoch"</h3>
+    <ul>
+      <li>Check your validator's vote credit score for the relevant epoch on Validators.app. If the validator had a period of delinquency or reduced voting efficiency, rewards for that epoch will be proportionally lower.</li>
+      <li>Verify the inflation commission rate — commission changes on Solana can take effect with no advance notice. Check your validator's current commission on the Solana Explorer or Validators.app.</li>
+      <li>Remember that Jito tip income is variable — lower network activity periods produce less MEV, reducing the tip component of APY.</li>
+    </ul>
+
+    <h3>"My validator shows as delinquent — what do I do?"</h3>
+    <ul>
+      <li>Begin the redelegation process immediately: deactivate your stake in your wallet. During the ~2–3 day cooldown epoch, research a replacement validator using Validators.app. After the epoch ends and SOL is withdrawable, create a new stake account and delegate to your chosen replacement.</li>
+      <li>Note: you cannot redelegate directly — you must deactivate, wait for the epoch, withdraw, and delegate fresh. Plan this process in advance to minimise the epochs of missed rewards.</li>
+    </ul>
+
+    <h3>"I received a 'claim your Solana staking rewards' message"</h3>
+    <ul>
+      <li>This is a scam. Solana staking rewards are automatically added to your stake account at each epoch boundary — there is no claiming action required and no separate site to "claim" from. Any message directing you to a site to claim rewards is phishing. Do not interact with it.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Best debugging source:</strong>
+      <a href="https://solanabeach.io/" target="_blank" rel="noopener nofollow" class="src">SolanaBeach.io</a>
+      and the official
+      <a href="https://explorer.solana.com/" target="_blank" rel="noopener nofollow" class="src">Solana Explorer</a>
+      are the authoritative data sources. Search your stake account address to see its exact
+      activation status, epoch reward history, and delegated validator details.
+      For validator-specific data (vote credits, commission history, Jito status), use Validators.app.
+    </div>
+  </section>
+
+  <section class="eeat" id="eeat" aria-labelledby="eeat-title">
+    <h2 id="eeat-title">Authoritative Notes &amp; External References</h2>
+    <p>
+      Primary sources used throughout this guide. All links point to official Solana Foundation
+      resources, official developer documentation, established validator analytics platforms,
+      and liquid staking protocol documentation.
+    </p>
+
+    <div class="grid-2">
+      <div>
+        <h3>Official Docs &amp; Protocol</h3>
+        <ul>
+          <li><a href="https://solana.com/docs/economics/staking" target="_blank" rel="noopener nofollow">Solana.com — Official Staking Documentation</a></li>
+          <li><a href="https://solana.com/solana-whitepaper.pdf" target="_blank" rel="noopener nofollow">Solana Whitepaper — Proof of History Original Paper</a></li>
+          <li><a href="https://docs.solanalabs.com/consensus/tower-bft" target="_blank" rel="noopener nofollow">Solana Labs Docs — Tower BFT Specification</a></li>
+          <li><a href="https://explorer.solana.com/" target="_blank" rel="noopener nofollow">Solana Explorer — Official Block Explorer</a></li>
+          <li><a href="https://phantom.app/" target="_blank" rel="noopener nofollow">Phantom.app — Official Solana Wallet</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Analytics, MEV &amp; Liquid Staking</h3>
+        <ul>
+          <li><a href="https://solanabeach.io/" target="_blank" rel="noopener nofollow">SolanaBeach.io — Validator Stats &amp; Network Analytics</a></li>
+          <li><a href="https://validators.app/" target="_blank" rel="noopener nofollow">Validators.app — Vote Credit &amp; APY Analytics</a></li>
+          <li><a href="https://www.solanacompass.com/" target="_blank" rel="noopener nofollow">SolanaCompass.com — Combined Yield Estimates</a></li>
+          <li><a href="https://jito.network/" target="_blank" rel="noopener nofollow">Jito.network — MEV Infrastructure &amp; jitoSOL</a></li>
+          <li><a href="https://marinade.finance/" target="_blank" rel="noopener nofollow">Marinade.finance — mSOL Liquid Staking</a></li>
+          <li><a href="https://sanctum.so/" target="_blank" rel="noopener nofollow">Sanctum.so — Solana LST Aggregator</a></li>
+          <li><a href="https://cogentcrypto.io/" target="_blank" rel="noopener nofollow">Cogent Crypto — Validator Alerts &amp; Analytics</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:1rem;">
+      <strong>About:</strong> Prepared by Crypto Finance Experts as a practical SEO-oriented knowledge base covering
+      Solana staking: Tower BFT consensus, Proof of History clock, vote credit mechanics, epoch rewards,
+      Jito MEV and tip sharing, mSOL/jitoSOL/Sanctum liquid staking, delinquent validator detection,
+      APY/APR, safety (no delegator slashing), and troubleshooting.
+    </div>
+  </section>
+
+  <section class="card faq-section" aria-labelledby="faq">
+    <h2 id="faq">Solana Staking: Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f1" id="b1">
+        <h3>How does Solana staking work?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f1" class="faq-content" role="region" aria-labelledby="b1">
+        <p>Solana staking works through on-chain stake accounts. You create a stake account, fund it with SOL, and delegate to a validator. The stake warms up over one epoch (~2–3 days) and then earns rewards at each subsequent epoch boundary. Rewards are automatically added to your stake account and compound for the next epoch — no manual claiming required. To withdraw, you deactivate the stake, wait one epoch for it to cool down, and then withdraw to your main balance.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f2" id="b2">
+        <h3>What APY can I earn staking SOL?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f2" class="faq-content" role="region" aria-labelledby="b2">
+        <p>In 2026, SOL staking yields approximately 4–5% gross APR from protocol inflation, decreasing per Solana's annual schedule. High-quality validators running the Jito client and sharing MEV tips can add 1–3% additional APY — bringing total effective APY for the best validators to 5–8%. Net APY after validator commission (typically 0–10%) and adjusted for vote credit efficiency is what you actually earn. Verify current rates on SolanaBeach.io and Validators.app — these show per-validator estimates.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f3" id="b3">
+        <h3>Can I be slashed by staking SOL?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f3" class="faq-content" role="region" aria-labelledby="b3">
+        <p>No — Solana does not have delegator slashing. If a validator misbehaves or goes offline, delegators simply earn reduced or zero rewards for affected epochs. Your SOL principal is never reduced by validator performance failures. This is a significant safety advantage compared to networks like Cosmos Hub (5% slash), Polkadot (proportional delegator slash), and Ethereum PoS where validator issues can affect the protocol's operational integrity. The risk on Solana for delegators is yield loss only, not principal loss.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f4" id="b4">
+        <h3>What are vote credits and why do they matter?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f4" class="faq-content" role="region" aria-labelledby="b4">
+        <p>Vote credits are earned by validators for each block they successfully vote on that is subsequently confirmed. The vote credit score measures what percentage of maximum possible credits a validator earned in an epoch. A validator at 99% vote credit efficiency earns proportionally more rewards than one at 90%. Because rewards are distributed based on vote credit share, a validator's vote credit performance directly multiplies your effective APY. Always check trailing epoch vote credit scores (aim for 95%+) on Validators.app before delegating.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f5" id="b5">
+        <h3>What is Jito and how does it affect staking yield?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f5" class="faq-content" role="region" aria-labelledby="b5">
+        <p>Jito is a MEV infrastructure layer for Solana. Jito's block engine bundles MEV-producing transactions and auctions block space to "searchers" who pay "tips." Validators running the Jito-Solana client receive these tips and can share them with delegators. Validators that share Jito tips can deliver 1–3% additional APY on top of standard inflation rewards — a significant boost. jitoSOL is Jito's liquid staking token that automatically captures MEV tip revenue for holders. As of 2025–2026, Jito participation is arguably the most important criterion for Solana validator selection.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f6" id="b6">
+        <h3>What is the difference between mSOL, jitoSOL, and Sanctum?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f6" class="faq-content" role="region" aria-labelledby="b6">
+        <p>mSOL (Marinade Finance) is the original Solana LST — auto-diversified across many validators, widest DeFi acceptance, ~6–6.5% effective APY. jitoSOL (Jito Network) routes stake specifically to Jito-client validators to capture MEV tips, delivering the highest effective APY (~6.5–8%) in the Solana liquid staking ecosystem. Sanctum is an LST aggregator and liquidity layer — not a standalone LST itself, but a protocol that enables any LST (including validator-specific tokens like bSOL, compassSOL) to maintain deep liquidity. Sanctum's Infinity pool accepts all Solana LSTs and its router finds optimal LST yield for deposits.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f7" id="b7">
+        <h3>How long does it take to unstake SOL?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f7" class="faq-content" role="region" aria-labelledby="b7">
+        <p>For native staking: deactivation takes approximately one full epoch (~2–3 days) before SOL becomes withdrawable. After the epoch, you withdraw to your main wallet — no additional waiting. For liquid staking: Marinade offers an instant unstake option (with a small fee) or standard epoch-based unstaking. jitoSOL can be sold on Solana DEXs for near-instant liquidity. The Solana epoch (~2–3 days) is shorter than most other PoS networks, making native unstaking relatively quick compared to Cosmos (21 days) or Polkadot (28 days).</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f8" id="b8">
+        <h3>What is Proof of History and why does it matter for staking?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f8" class="faq-content" role="region" aria-labelledby="b8">
+        <p>Proof of History is a verifiable delay function that creates a shared cryptographic clock for the Solana network. It records the passage of time by continuously running SHA-256 hash iterations and embedding transactions at specific positions in the hash chain. This allows all nodes to independently verify the timing of events without relying on synchronised clocks. PoH enables Solana's ~400ms slot times by eliminating the clock synchronisation overhead of traditional BFT consensus — and is the foundation for Solana's high throughput. For stakers, faster slots mean more voting opportunities per epoch and faster reward accumulation.</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-button" aria-expanded="false" aria-controls="f9" id="b9">
+        <h3>How do I choose the best Solana validator?</h3><span class="faq-plus">+</span>
+      </button>
+      <div id="f9" class="faq-content" role="region" aria-labelledby="b9">
+        <p>Evaluate in this priority order: (1) Vote credit efficiency — aim for 95%+ over trailing 20 epochs on Validators.app. (2) Jito participation — does the validator run the Jito client and what percentage of tips do they share? (3) Inflation commission — lower is better, but only after confirming vote credits and Jito. (4) Stake concentration — avoid validators already holding &gt;1.5% of total staked SOL to support decentralisation. (5) Identity verification — prefer validators with published keybase identity and contact information. (6) Data centre diversity — avoid validators clustered in the same DC as the largest operators.</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="container" role="contentinfo" style="padding:2rem 0;border-top:1px solid var(--line);margin-top:2rem">
+  <p class="muted">© 2026 Solana Staking Guide. Educational content with safety-first operational focus. Not financial or investment advice.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      const body = document.getElementById(btn.getAttribute('aria-controls'));
+      btn.setAttribute('aria-expanded', String(!open));
+      btn.querySelector('.faq-plus').textContent = open ? '+' : '−';
+      body.style.maxHeight = open ? '0' : body.scrollHeight + 'px';
+      body.classList.toggle('open', !open);
+    });
+  });
+</script>
+
+</body>
+</html>
